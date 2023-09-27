@@ -1,6 +1,24 @@
-import React from "react";
-import ReactDOM from "react-dom";
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { IntlProvider } from 'react-intl';
+import localeEsMessages from "./locales/es";
+import localeEnMessages from "./locales/en";
+import JobsList from "./components/jobsList";
 
-import JobsList from "./components/jobslist";
+function getBrowserLanguage() {
+    const language = navigator.language || navigator.userLanguage;
+    if (language.startsWith("es")) {
+        return { locale: "es-ES", messages: localeEsMessages };
+    } else {
+        return { locale: "en-US", messages: localeEnMessages };
+    }
+}
 
-ReactDOM.render(<JobsList />, document.getElementById("root"));
+const languageConfig = getBrowserLanguage();
+
+ReactDOM.render(
+    <IntlProvider locale={languageConfig.locale} messages={languageConfig.messages}>
+        <JobsList />
+    </IntlProvider>,
+    document.getElementById('root')
+);
